@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     CHAT_MODEL: str = "gpt-5-mini"
     EMBEDDING_MODEL: str = "text-embedding-3-small"
 
+    DATA_DIR: str | None = None
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_ignore_empty=True,

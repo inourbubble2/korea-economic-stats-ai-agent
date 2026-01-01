@@ -14,6 +14,8 @@ from app.schema.statistics import Statistic
 
 # Paths
 def get_data_folder() -> Path:
+    if settings.DATA_DIR:
+        return Path(settings.DATA_DIR)
     return Path(__file__).resolve().parents[2] / "data"
 
 

@@ -6,16 +6,23 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.agent.ecos_agent import ecos_agent
 from app.api.routes import router as api_router
 from app.core.config import settings
+from app.mcp_server import create_mcp_app
 from app.repository.statistics import get_statistics_repository
 
 from ag_ui_langgraph import add_langgraph_fastapi_endpoint
 from copilotkit import LangGraphAGUIAgent
 
+mcp_app = create_mcp_app()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Initialize repository
     get_statistics_repository()
-    yield
+
+    # Initialize MCP app (starts session manager for Streamable HTTP)
+    async with mcp_app.router.lifespan_context(mcp_app):
+        yield
 
 
 def create_app() -> FastAPI:
@@ -40,6 +47,8 @@ def create_app() -> FastAPI:
         graph=ecos_agent,
     )
     add_langgraph_fastapi_endpoint(app=app, agent=agent, path="")
+
+    app.mount("", mcp_app)
 
     return app
 

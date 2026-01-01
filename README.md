@@ -1,34 +1,37 @@
 # 🇰🇷 Korea Economic Statistics AI Agent (ECOS Agent)
 
-This project is an AI-powered agent specialized in retrieving and analyzing Korean economic statistics using the Bank of Korea's ECOS API. It leverages LangChain and OpenAI to understand natural language queries, search for relevant statistics, and fetch precise time-series data.
+An AI agent that retrieves and analyzes Bank of Korea economic statistics (ECOS). It uses LangGraph for agent orchestration and supports the Model Context Protocol (MCP).
 
 ## Key Features
+- **Intelligent Search**: Semantically searches for statistics codes and items.
+- **RAG Engine**: Retrieves precise data from the ECOS API.
+- **MCP Server**: Provides a standard **Streamable HTTP** interface (`/mcp`) for AI IDEs (Cursor, Windsurf) and other clients.
+- **Korean Formatting**: Auto-formats large currency units (e.g., 1조 원).
 
-- **Intelligent Search**: Uses semantic search (Vector Embeddings) to find the right statistics even if the user's query doesn't match the exact official name.
-- **Smart Metadata Discovery**: Automatically inspects statistic sub-items (e.g., distinguishing "Total GDP" from "Agriculture GDP") to ensure data accuracy.
-- **Context-Aware Retrieval**: Dynamically adjusts the query date range based on data availability (e.g., if data ends in 2023, it won't fail trying to fetch 2025).
-- **Korean-Friendly Formatting**: Automatically converts large numbers (e.g., `1,000,000 백만원`) into readable Korean units (`1조 원`).
-- **Streaming API**: Supports real-time streaming of agent thought processes and answers via Server-Sent Events (SSE).
+## Quick Start
 
-## Tech Stack
+### Prerequisites
+- Python 3.12+
+- `uv` package manager
 
-- **Framework**: FastAPI
-- **AI/LLM**: LangChain, LangGraph, OpenAI (GPT-4o/mini)
-- **Vector Store**: In-Memory (using `numpy` & `pickle` for lightweight local persistence)
-- **Data Source**: Bank of Korea ECOS API
-- **HTTP Client**: `httpx` (Async)
+### Local Development
+1. **Install dependencies**
+   ```bash
+   uv sync
+   ```
+2. **Run Server**
+   ```bash
+   uv run uvicorn app.main:app --reload
+   ```
+   - API Docs: `http://localhost:8000/docs`
+   - MCP Endpoint: `http://localhost:8000/mcp`
 
-### Running the Server
+## 🛠 Tech Stack
+- **Core**: FastAPI, LangGraph, LangChain
+- **Protocol**: Model Context Protocol (MCP) - Streamable HTTP
+- **Infra**: Google Cloud Run, Docker
 
-```bash
-uvicorn app.main:create_app --factory --reload
-```
-The API will be available at `http://localhost:8000`.
-- **Docs**: `http://localhost:8000/docs`
-
-## 🧠 How It Works
-
-1. **Search**: The user's query is converted to a vector and matched against `ecos_statistics.csv` to find the relevant `StatCode`.
-2. **Item Inspection**: The agent calls `get_statistic_item_list` to see valid sub-items and **data availability range** (Start/End Time).
-3. **Data Fetch**: Using the `StatCode` and specific `ItemCode`, the agent fetches the time-series data via `get_statistic_data` from ECOS.
-4. **Analysis & Format**: The agent analyzes the data, formats numbers into "Jo/Euk" units, and generates a natural language response.
+## 🔌 MCP Configuration
+To connect from an MCP Client (like Cursor):
+- **Type**: Streamable HTTP
+- **URL**: `http://localhost:8000/mcp`
