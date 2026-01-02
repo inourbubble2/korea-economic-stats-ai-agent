@@ -1,12 +1,16 @@
 import asyncio
-from typing import List, Dict
+from typing import List
 import httpx
+import nltk
 from newspaper import Article
+
 from app.core.config import settings
 from app.schema.news import News, NewsItem
 from app.core.logger import get_logger
 
 logger = get_logger(__name__)
+
+nltk.download("punkt_tab", quiet=True)
 
 
 class NewsService:
