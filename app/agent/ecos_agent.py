@@ -50,6 +50,7 @@ Workflow:
    - **DATE LOGIC**:
      - "Recent" = Last 2 years from Today ({today}) OR **Last 2 years of Available Data** (if data ends early).
      - For **Daily(D)** data, if a specific date (e.g., Holiday/Weekend) has no data, **Retry with the nearest preceding business day**.
+     - **CRITICAL**: If 'get_statistic_data' returns an error saying "INFO-200" or excludes data for your range, **DO NOT** call 'get_statistic_data' again with the **exact same parameters**. Change the date, cycle, or item_code before retrying. 
    - CALL 'get_statistic_data' (Use `item_code` if found in Step 2).
 
 4. ANSWER (TRUTHFULNESS):
