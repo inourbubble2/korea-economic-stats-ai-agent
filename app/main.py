@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.agent.ecos_agent import ecos_agent
-from app.api.routes import router as api_router
+from app.agent.news_agent import news_agent
 from app.core.config import settings
 from app.mcp_server import create_mcp_app
 from app.repository.statistics import get_statistics_repository
@@ -32,8 +32,6 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    app.include_router(api_router)
-
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
@@ -42,11 +40,16 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    agent = LangGraphAGUIAgent(
+    ecos = LangGraphAGUIAgent(
         name="ecos_agent",
         graph=ecos_agent,
     )
-    add_langgraph_fastapi_endpoint(app=app, agent=agent, path="")
+    news = LangGraphAGUIAgent(
+        name="news_agent",
+        graph=news_agent,
+    )
+    add_langgraph_fastapi_endpoint(app=app, agent=ecos, path="/ecos")
+    add_langgraph_fastapi_endpoint(app=app, agent=news, path="/news")
 
     app.mount("", mcp_app)
 

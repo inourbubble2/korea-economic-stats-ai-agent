@@ -5,7 +5,7 @@ from langchain.agents.middleware import ModelRequest, dynamic_prompt
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 
-from app.agent.tools_news import search_naver_news, scrape_news_article
+from app.agent.news_tools import search_naver_news, scrape_news_article
 from app.core.config import settings
 
 

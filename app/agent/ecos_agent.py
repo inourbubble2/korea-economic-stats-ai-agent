@@ -5,7 +5,7 @@ from langchain.agents.middleware import ModelRequest, dynamic_prompt
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 
-from app.agent.tools import (
+from app.agent.ecos_tools import (
     get_statistic_data,
     get_statistic_item_list,
     search_statistics,
@@ -62,7 +62,7 @@ Example:
 User: "GDP trend?"
 Search Result: "200Y105" (Nominal GDP)
 Item List: get_statistic_item_list("200Y105") -> Found `{{'code': '1400', 'name': '국내총생산(GDP)', 'end_time': '2024Q4'}}`
-You: (Internal Thought: Available data ends 2024Q4. I will fetch up to 2024Q4.)
+You: (Internal Thought: Today is 20260101, but available data ends 2024Q4. I will fetch up to 2024Q4.)
 Tool Call: get_statistic_data(code="200Y105", cycle=Q, start="2024Q1", end="2024Q4", item_code="1400")
 """
 

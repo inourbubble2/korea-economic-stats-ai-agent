@@ -1,7 +1,8 @@
+from typing import Optional
 from pydantic import BaseModel, Field
 
 
-class NewsItem(BaseModel):
+class News(BaseModel):
     title: str = Field(description="Title of the news article")
     original_link: str = Field(
         alias="originallink", description="Original link to the article"
@@ -12,3 +13,11 @@ class NewsItem(BaseModel):
 
     class Config:
         populate_by_name = True
+
+
+class NewsItem(BaseModel):
+    title: str
+    text: str
+    publish_date: Optional[str]
+    authors: str
+    summary: str

@@ -1,8 +1,9 @@
-from typing import List, Dict, Any
-import requests
+import asyncio
+from typing import List, Dict
+import httpx
 from newspaper import Article
 from app.core.config import settings
-from app.schema.news import NewsItem
+from app.schema.news import News, NewsItem
 
 
 class NewsService:
@@ -15,40 +16,50 @@ class NewsService:
             "X-Naver-Client-Secret": self.client_secret,
         }
 
-    def search_news(
+    async def search_news(
         self, query: str, display: int = 5, sort: str = "sim"
-    ) -> List[NewsItem]:
+    ) -> List[News]:
         """
         Search Naver News for the given query.
         """
         params = {"query": query, "display": display, "sort": sort}
 
-        response = requests.get(self.api_url, headers=self.headers, params=params)
-        response.raise_for_status()
-        data = response.json()
-        items = data.get("items", [])
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                self.api_url, headers=self.headers, params=params
+            )
+            response.raise_for_status()
+            data = response.json()
+            items = data.get("items", [])
 
-        news_items = []
-        for item in items:
-            news_items.append(NewsItem(**item))
+            news_items = []
+            for item in items:
+                news_items.append(News(**item))
 
-        return news_items
+            return news_items
 
-    def scrape_article(self, url: str) -> Dict[str, str]:
+    async def scrape_article(self, url: str) -> NewsItem:
         """
         Scrape article content using newspaper4k.
+        This runs the blocking newspaper calls in a separate thread.
+        """
+        return await asyncio.to_thread(self._scrape_article_sync, url)
+
+    def _scrape_article_sync(self, url: str) -> NewsItem:
+        """
+        Internal synchronous method for scraping.
         """
         article = Article(url)
         article.download()
         article.parse()
 
-        return {
-            "title": article.title,
-            "text": article.text,
-            "publish_date": str(article.publish_date) if article.publish_date else None,
-            "authors": ", ".join(article.authors),
-            "summary": article.summary,
-        }
+        return NewsItem(
+            title=article.title,
+            text=article.text,
+            publish_date=str(article.publish_date) if article.publish_date else None,
+            authors=", ".join(article.authors),
+            summary=article.summary,
+        )
 
 
 news_service = NewsService()
