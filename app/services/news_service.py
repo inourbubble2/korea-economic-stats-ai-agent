@@ -59,7 +59,7 @@ class NewsService:
         """
         Internal synchronous method for scraping.
         """
-        article = Article(url)
+        article = Article(url, fetch_images=False)
         article.download()
         article.parse()
 
