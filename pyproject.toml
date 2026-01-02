@@ -20,6 +20,8 @@ dependencies = [
     "ag-ui-langgraph (>=0.0.22,<0.0.23)",
     "copilotkit (==0.1.74)",
     "mcp>=1.25.0",
+    "newspaper4k>=0.9.4.1",
+    "requests>=2.32.5",
 ]
 
 [build-system]

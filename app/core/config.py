@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Korea Economic Stats AI Agent"
 
     OPENAI_API_KEY: str = ""
+    NAVER_CLIENT_ID: str = ""
+    NAVER_CLIENT_SECRET: str = ""
     ECOS_API_KEY: str = ""
 
     CHAT_MODEL: str = "gpt-5-mini"
