@@ -1,6 +1,6 @@
 # 🇰🇷 Korea Economy Agent
 AI Agents that retrieves Bank of Korea economic statistics (ECOS) and analyzes real-time economic news. 
-It uses LangGraph for agent orchestrating and supports the Model Context Protocol (MCP) & The Agent–User Interaction (AG-UI) Protocol.
+It uses LangGraph for agent orchestrating and supports the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro) & The [Agent–User Interaction (AG-UI) Protocol](https://docs.ag-ui.com/introduction).
 
 ## Key Features
 - **Macro Analysis**: Retrieval of official Bank of Korea statistics (ECOS Agent).
