@@ -38,7 +38,10 @@ The user is asking about Korean/Global economy.
 """
 
 
-llm = ChatOpenAI(model=settings.CHAT_MODEL, api_key=settings.OPENAI_API_KEY)
+llm = ChatOpenAI(
+    model=settings.CHAT_MODEL,
+    api_key=settings.OPENAI_API_KEY,
+)
 tools = [search_naver_news, scrape_news_article]
 
 news_agent = create_agent(

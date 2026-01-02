@@ -1,9 +1,11 @@
-from typing import Dict, List, Optional
+from typing import List, Optional
 import httpx
-
+from app.core.logger import get_logger
 from app.core.config import settings
+from app.schema.statistics import Statistic, StatisticItem, StatisticData
 from app.repository.statistics import get_statistics_repository
-from app.schema.statistics import Statistic, StatisticData, StatisticItem
+
+logger = get_logger(__name__)
 
 
 class EcosService:
@@ -15,6 +17,7 @@ class EcosService:
         """
         Search for available economic statistics by a keyword.
         """
+        logger.info(f"🔍 Searching Statistics: {query}")
         repo = get_statistics_repository()
         return repo.search(query)
 
@@ -24,6 +27,7 @@ class EcosService:
         """
         # ECOS API Format: /StatisticItemList/{KEY}/json/kr/1/1000/{STAT_CODE}
         url = f"{self.base_url}/StatisticItemList/{self.api_key}/json/kr/1/1000/{stat_code}"
+        logger.info(f"📡 Fetching Statistics Item List: {stat_code}")
 
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
@@ -37,6 +41,7 @@ class EcosService:
                 return items
 
             elif "RESULT" in data:
+                logger.error(f"ECOS API Error (Items): {data['RESULT']['MESSAGE']}")
                 raise Exception(
                     f"{data['RESULT']['MESSAGE']} (Code: {data['RESULT']['CODE']})"
                 )
@@ -54,6 +59,9 @@ class EcosService:
         """
         Fetch specific statistical data values.
         """
+        if not self.api_key:
+            raise ValueError("ECOS_API_KEY is not configured.")
+
         # ECOS API Format: /StatisticSearch/{KEY}/json/kr/1/1000/{STAT_CODE}/{CYCLE}/{START}/{END}/{ITEM_CODE}
         base_search_url = (
             f"{self.base_url}/StatisticSearch/{self.api_key}/json/kr/1/1000/"
@@ -64,6 +72,7 @@ class EcosService:
             parts.append(item_code)
 
         url = base_search_url + "/".join(parts)
+        logger.info(f"📡 Fetching Statistics Data: {url}")
 
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
@@ -106,8 +115,10 @@ class EcosService:
                 if error_code == "ERROR-101":
                     message += " (Hint: Check the cycle.)"
 
+                logger.error(f"ECOS API Error (Data): {message}")
                 raise Exception(f"{message} (Code: {error_code})")
 
+            logger.error("Unknown ECOS response format")
             raise Exception("Unknown response format")
 
 

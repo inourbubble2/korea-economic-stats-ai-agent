@@ -4,6 +4,9 @@ import httpx
 from newspaper import Article
 from app.core.config import settings
 from app.schema.news import News, NewsItem
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class NewsService:
@@ -23,6 +26,7 @@ class NewsService:
         Search Naver News for the given query.
         """
         params = {"query": query, "display": display, "sort": sort}
+        logger.info(f"📰 Searching News: {query}")
 
         async with httpx.AsyncClient() as client:
             response = await client.get(
@@ -36,6 +40,7 @@ class NewsService:
             for item in items:
                 news_items.append(News(**item))
 
+            logger.info(f"📰 Found {len(news_items)} articles.")
             return news_items
 
     async def scrape_article(self, url: str) -> NewsItem:
@@ -43,6 +48,7 @@ class NewsService:
         Scrape article content using newspaper4k.
         This runs the blocking newspaper calls in a separate thread.
         """
+        logger.info(f"🧹 Scraping Article: {url}")
         return await asyncio.to_thread(self._scrape_article_sync, url)
 
     def _scrape_article_sync(self, url: str) -> NewsItem:
