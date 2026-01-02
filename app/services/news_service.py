@@ -49,18 +49,28 @@ class NewsService:
 
     async def scrape_article(self, url: str) -> NewsItem:
         """
-        Scrape article content using newspaper4k.
-        This runs the blocking newspaper calls in a separate thread.
+        Scrape article content using httpx (async) + newspaper4k (parsing).
         """
         logger.info(f"🧹 Scraping Article: {url}")
-        return await asyncio.to_thread(self._scrape_article_sync, url)
 
-    def _scrape_article_sync(self, url: str) -> NewsItem:
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(url, timeout=2.0, follow_redirects=True)
+                response.raise_for_status()
+                html = response.text
+        except Exception as e:
+            logger.error(f"Error scraping {url}: {e}")
+            raise e
+
+        # Run parsing in thread to avoid blocking the loop
+        return await asyncio.to_thread(self._scrape_article_sync, url, html)
+
+    def _scrape_article_sync(self, url: str, html: str) -> NewsItem:
         """
-        Internal synchronous method for scraping.
+        Internal synchronous method for parsing.
         """
         article = Article(url, fetch_images=False)
-        article.download()
+        article.download(input_html=html)
         article.parse()
 
         return NewsItem(

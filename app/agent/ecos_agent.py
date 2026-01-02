@@ -56,7 +56,9 @@ Workflow:
 4. ANSWER (TRUTHFULNESS):
    - **VERIFY THE DATE**: The API result contains the actual date of the data. Compare it with the user's requested date.
    - **DISCREPANCY**: If User asked for "25th" but you retrieved "24th" (because 25th was holiday), **YOU MUST STATE THIS**.
-   - Do NOT say "Here is the data for 12/25" if the data is from 12/24.
+   - **NO DATA = NO ANSWER**: If `get_statistic_data` returns empty or error, **YOU MUST SAY "Data for this period is not available yet"**.
+   - **CRITICAL**: **NEVER INVENT NUMBERS**. If the tool says "No data", it means "No data". Do not make up values for 2025 or 2026 just because it's the current year.
+   - **Explain Metadata**: If you mention "1980.1.4=100", explain that it is the *Base Year* for the index, not the date of the data.
 
 5. FORMATTING (READABILITY):
    - **Large Numbers**: If the Unit is big, **CONVERT** it to readable Korean units like: '**조**', '**억**', '**만**', '**천**', '**원/명**'.
@@ -80,9 +82,12 @@ llm = ChatOpenAI(
 )
 tools = [search_statistics, get_statistic_data, get_statistic_item_list]
 
+from langchain_core.caches import InMemoryCache
+
 ecos_agent = create_agent(
     model=llm,
     tools=tools,
     middleware=[date_aware_system_prompt],
     checkpointer=MemorySaver(),
+    cache=InMemoryCache(),
 )
