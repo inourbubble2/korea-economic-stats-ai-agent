@@ -1,12 +1,10 @@
-# 🇰🇷 Korea Economic Statistics AI Agent (ECOS Agent)
-
-An AI agent that retrieves and analyzes Bank of Korea economic statistics (ECOS). It uses LangGraph for agent orchestration and supports the Model Context Protocol (MCP).
+# 🇰🇷 Korea Economy Agent
+AI Agents that retrieves Bank of Korea economic statistics (ECOS) and analyzes real-time economic news. 
+It uses LangGraph for agent orchestrating and supports the Model Context Protocol (MCP) & The Agent–User Interaction (AG-UI) Protocol.
 
 ## Key Features
-- **Intelligent Search**: Semantically searches for statistics codes and items.
-- **RAG Engine**: Retrieves precise data from the ECOS API.
-- **MCP Server**: Provides a standard **Streamable HTTP** interface (`/mcp`) for AI IDEs (Cursor, Windsurf) and other clients.
-- **Korean Formatting**: Auto-formats large currency units (e.g., 1조 원).
+- **Macro Analysis**: Retrieval of official Bank of Korea statistics (ECOS Agent).
+- **News Insight**: Real-time searching and scraping of Naver News (News Agent).
 
 ## Quick Start
 
@@ -27,11 +25,17 @@ An AI agent that retrieves and analyzes Bank of Korea economic statistics (ECOS)
    - MCP Endpoint: `http://localhost:8000/mcp`
 
 ## 🛠 Tech Stack
-- **Core**: FastAPI, LangGraph, LangChain
+- **Core**: FastAPI, LangGraph, LangChain, newspaper4k
 - **Protocol**: Model Context Protocol (MCP) - Streamable HTTP
 - **Infra**: Google Cloud Run, Docker
 
-## 🔌 MCP Configuration
+## 🌐 AG UI & LangGraph Endpoints
+This agent exposes endpoints for **AG-UI**.
+
+- **ECOS Agent**: `http://localhost:8000/ecos`
+- **News Agent**: `http://localhost:8000/news`
+
+## 📨 MCP Configuration
 To connect from an MCP Client (like Cursor):
 - **Type**: Streamable HTTP
 - **URL**: `http://localhost:8000/mcp`

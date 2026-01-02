@@ -1,5 +1,5 @@
 [project]
-name = "korea-economic-stats-ai-agent"
+name = "korea-economy-agent"
 version = "0.1.0"
 description = "Korean Economic Statistics AI Agent"
 authors = [

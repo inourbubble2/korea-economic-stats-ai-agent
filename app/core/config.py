@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Korea Economic Stats AI Agent"
+    PROJECT_NAME: str = "Korea Economy Agent"
 
     OPENAI_API_KEY: str = ""
     NAVER_CLIENT_ID: str = ""

@@ -628,7 +628,7 @@ wheels = [
 ]
 
 [[package]]
-name = "korea-economic-stats-ai-agent"
+name = "korea-economy-agent"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
