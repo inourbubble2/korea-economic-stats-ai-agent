@@ -48,7 +48,7 @@ async def ask_news_agent(query: str, thread_id: Optional[str] = None) -> str:
 @mcp.tool()
 async def ask_ecos_agent(query: str, thread_id: Optional[str] = None) -> str:
     """
-    Ask the ECOS (Korea Economic Statistics) Agent a question.
+    Ask the ECOS Agent to search and analyze economic statistics.
     Use this tool when you need to retrieve vast, official economic statistics,
     analyze long-term trends, or get comprehensive data sets from the Bank of Korea.
     """
