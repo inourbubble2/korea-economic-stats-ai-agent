@@ -42,6 +42,30 @@ async def get_statistic_item_list(
         return f"Error fetching item list: {str(e)}"
 
 
+def _format_date(date_str: str, cycle: str) -> str:
+    """
+    Format date string to match ECOS API requirements based on cycle.
+    Removes non-alphanumeric characters.
+    """
+    if not date_str:
+        return ""
+
+    # Remove separators (., -, /)
+    cleaned = "".join(c for c in date_str if c.isalnum())
+
+    # Basic validation/truncation based on cycle
+    if cycle == "A":
+        return cleaned[:4]  # YYYY
+    elif cycle == "Q":
+        return cleaned[:6]  # YYYYQn
+    elif cycle == "M":
+        return cleaned[:6]  # YYYYMM
+    elif cycle == "D":
+        return cleaned[:8]  # YYYYMMDD
+
+    return cleaned
+
+
 @tool
 async def get_statistic_data(
     stat_code: str,
@@ -71,8 +95,12 @@ async def get_statistic_data(
         Or an error string if failed.
     """
     try:
+        # Enforce date formatting
+        fmt_start = _format_date(start_time, cycle)
+        fmt_end = _format_date(end_time, cycle)
+
         return await ecos_service.get_statistic_data(
-            stat_code, cycle, start_time, end_time, item_code
+            stat_code, cycle, fmt_start, fmt_end, item_code
         )
     except Exception as e:
         return f"Error fetching data: {str(e)}"
