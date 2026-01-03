@@ -47,12 +47,9 @@ llm = ChatOpenAI(
 )
 tools = [search_naver_news, scrape_news_article]
 
-from langchain_core.caches import InMemoryCache
-
 news_agent = create_agent(
     model=llm,
     tools=tools,
     middleware=[news_system_prompt],
     checkpointer=MemorySaver(),
-    cache=InMemoryCache(),
 )

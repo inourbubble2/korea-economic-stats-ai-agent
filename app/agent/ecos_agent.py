@@ -83,12 +83,9 @@ llm = ChatOpenAI(
 )
 tools = [search_statistics, get_statistic_data, get_statistic_item_list]
 
-from langchain_core.caches import InMemoryCache
-
 ecos_agent = create_agent(
     model=llm,
     tools=tools,
     middleware=[date_aware_system_prompt],
     checkpointer=MemorySaver(),
-    cache=InMemoryCache(),
 )
