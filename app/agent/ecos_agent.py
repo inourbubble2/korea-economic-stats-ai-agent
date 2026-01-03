@@ -79,6 +79,7 @@ Tool Call: get_statistic_data(code="200Y105", cycle=Q, start="2024Q1", end="2025
 llm = ChatOpenAI(
     model=settings.CHAT_MODEL,
     api_key=settings.OPENAI_API_KEY,
+    temperature=0.0,
 )
 tools = [search_statistics, get_statistic_data, get_statistic_item_list]
 

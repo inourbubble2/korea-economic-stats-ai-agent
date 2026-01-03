@@ -43,6 +43,7 @@ The user is asking about Korean/Global economy.
 llm = ChatOpenAI(
     model=settings.CHAT_MODEL,
     api_key=settings.OPENAI_API_KEY,
+    temperature=0.0,
 )
 tools = [search_naver_news, scrape_news_article]
 
