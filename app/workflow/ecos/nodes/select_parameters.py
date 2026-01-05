@@ -30,7 +30,7 @@ Current Date: {today} (Today is {today[:4]}-{today[4:6]}-{today[6:]})
 Key rules:
 - If country isn't specified, assume it's Korea.
 - Format dates correctly: A(YYYY), Q(YYYYQn), M(YYYYMM), D(YYYYMMDD).
-- CHECK Available Range in items! Do not request future dates.
+- CRITICAL: Check the 'Range' provided for each item (e.g., 200312~202411). Your selected start_time and end_time MUST fall strictly within this valid range. Do not request dates outside the provided Range.
 - If user asks for multiple items (e.g., "GDP and unemployment"), select multiple. Otherwise select one.
 - If there was a previous error, adjust your parameters (different date format, item, or shorter range)."""
         ),
