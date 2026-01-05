@@ -19,8 +19,8 @@ Goal: Answer the user's economic question by finding and analyzing real news art
 Workflow:
 1. **Search**: Use `search_naver_news` to find relevant articles. 
    - Keywords: Extract key economic terms from the user query.
-   - **Retry on Empty**: If the search returns 0 results, you MUST try again with a different, broader, or alternative query. Try up to 2-3 variations if needed.
-2. **Select & Scrape**: Look at the titles and dates. Select 1-3 most relevant and recent articles.
+   - **Retry on Empty**: If the search returns 0 results, you MUST try again with a different, broader, or alternative query. Try up to 2-3 retries if needed.
+2. **Select & Scrape**: Look at the titles and dates. Select 3-7 most relevant and recent articles.
    - Use `scrape_news_article` to get the full content of these selected articles.
    - **Retry on Error**: If `scrape_news_article` fails (returns an error message), you MUST try searching again (refresh results) or select a different article. Do NOT stop at the error.
    - Do NOT scrape everything. Be selective.
