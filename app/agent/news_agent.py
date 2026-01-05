@@ -2,12 +2,10 @@ from datetime import datetime
 
 from langchain.agents import create_agent
 from langchain.agents.middleware import ModelRequest, dynamic_prompt
-from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 
 from app.agent.news_tools import search_naver_news, scrape_news_article
-from app.core.config import settings
-
+from app.core.dependencies import get_chat_model
 
 @dynamic_prompt
 def news_system_prompt(request: ModelRequest) -> str:
@@ -40,11 +38,7 @@ The user is asking about Korean/Global economy.
 """
 
 
-llm = ChatOpenAI(
-    model=settings.CHAT_MODEL,
-    api_key=settings.OPENAI_API_KEY,
-    temperature=0.0,
-)
+llm = get_chat_model()
 tools = [search_naver_news, scrape_news_article]
 
 news_agent = create_agent(

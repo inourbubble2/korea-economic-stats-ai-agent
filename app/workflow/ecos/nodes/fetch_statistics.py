@@ -2,7 +2,6 @@ from app.core.dependencies import get_chat_model
 from app.services.statistics_service import statistics_service
 from app.workflow.ecos.state import EcosState
 from app.core.logger import get_logger
-from langchain_core.messages import SystemMessage, HumanMessage
 
 logger = get_logger(__name__)
 

@@ -2,7 +2,6 @@ from datetime import datetime
 
 from langchain.agents import create_agent
 from langchain.agents.middleware import ModelRequest, dynamic_prompt
-from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 
 from app.agent.ecos_tools import (
@@ -10,7 +9,7 @@ from app.agent.ecos_tools import (
     get_statistic_item_list,
     search_statistics,
 )
-from app.core.config import settings
+from app.core.dependencies import get_chat_model
 
 
 @dynamic_prompt
@@ -76,11 +75,7 @@ Tool Call: get_statistic_data(code="200Y105", cycle=Q, start="2024Q1", end="2025
 """
 
 
-llm = ChatOpenAI(
-    model=settings.CHAT_MODEL,
-    api_key=settings.OPENAI_API_KEY,
-    temperature=0.0,
-)
+llm = get_chat_model()
 tools = [search_statistics, get_statistic_data, get_statistic_item_list]
 
 ecos_agent = create_agent(
