@@ -10,6 +10,7 @@ from app.schema.statistics import Statistic
 class StatisticsRepository:
     def __init__(self, data: List[Statistic], vector_store: InMemoryVectorStore):
         self._data = data
+        self.stats_by_code = {s.stat_code: s for s in data}
         self._vector_store = vector_store
 
     def get_all(self) -> List[Statistic]:
@@ -19,12 +20,11 @@ class StatisticsRepository:
         docs = self._vector_store.similarity_search(query, k=k)
 
         results = []
-        stat_map = {s.stat_code: s for s in self._data}
 
         for doc in docs:
             code = doc.metadata.get("stat_code")
-            if code and code in stat_map:
-                results.append(stat_map[code])
+            if code and code in self.stats_by_code:
+                results.append(self.stats_by_code[code])
 
         return results
 

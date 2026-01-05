@@ -4,7 +4,7 @@ from typing import Optional
 from mcp.server.fastmcp import FastMCP
 from starlette.applications import Starlette
 
-from app.agent.ecos_agent import ecos_agent
+from app.workflow.ecos.graph import ecos_graph
 from app.agent.news_agent import news_agent
 from app.core.config import settings
 from app.core.logger import get_logger
@@ -62,8 +62,8 @@ async def ask_ecos_agent(query: str, thread_id: Optional[str] = None) -> str:
     callback = AgentLoggingCallback(ecos_logger)
 
     config = {"configurable": {"thread_id": thread_id}, "callbacks": [callback]}
-    inputs = {"messages": [("user", query)]}
-    result = await ecos_agent.ainvoke(inputs, config=config)
+    inputs = {"query": query, "messages": [], "retry_count": 0}
+    result = await ecos_graph.ainvoke(inputs, config=config)
 
     messages = result.get("messages", [])
     if messages:

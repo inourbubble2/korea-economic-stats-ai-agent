@@ -1,3 +1,4 @@
+from langchain_openai.chat_models.base import ChatOpenAI
 import csv
 from functools import lru_cache
 from pathlib import Path
@@ -62,8 +63,8 @@ def get_vector_store() -> InMemoryVectorStore:
     data = get_stats_data()
     documents = [
         Document(
-            page_content=f"{stat.stat_name} {stat.stat_code}",
-            metadata={"stat_code": stat.stat_code},
+            page_content=f"{stat.full_path}",
+            metadata={"stat_code": stat.stat_code, "stat_name": stat.stat_name},
         )
         for stat in data
     ]
@@ -72,3 +73,12 @@ def get_vector_store() -> InMemoryVectorStore:
     store.dump(str(index_path))
 
     return store
+
+
+@lru_cache
+def get_chat_model() -> ChatOpenAI:
+    return ChatOpenAI(
+        model=settings.CHAT_MODEL,
+        api_key=settings.OPENAI_API_KEY,
+        temperature=settings.CHAT_MODEL_TEMPERATURE,
+    )

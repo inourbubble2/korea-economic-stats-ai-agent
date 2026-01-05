@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     ECOS_API_KEY: str = ""
 
     CHAT_MODEL: str = "gpt-5-mini"
+    CHAT_MODEL_TEMPERATURE: float = 0.0
     EMBEDDING_MODEL: str = "text-embedding-3-small"
 
     DATA_DIR: str | None = None

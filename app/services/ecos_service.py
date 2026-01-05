@@ -13,13 +13,13 @@ class EcosService:
         self.api_key = settings.ECOS_API_KEY
         self.base_url = "http://ecos.bok.or.kr/api"
 
-    def search_statistics(self, query: str) -> List[Statistic]:
+    def search_statistics(self, query: str, limit: int = 5) -> List[Statistic]:
         """
         Search for available economic statistics by a keyword.
         """
         logger.info(f"🔍 Searching Statistics: {query}")
         repo = get_statistics_repository()
-        return repo.search(query)
+        return repo.search(query, limit)
 
     async def get_statistic_item_list(self, stat_code: str) -> List[StatisticItem]:
         """
