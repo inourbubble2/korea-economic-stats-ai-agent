@@ -75,10 +75,8 @@ class NewsService:
 
         return NewsItem(
             title=article.title,
-            text=article.text,
+            text=article.text[:1000],
             publish_date=str(article.publish_date) if article.publish_date else None,
-            authors=", ".join(article.authors),
-            summary=article.summary,
         )
 
 

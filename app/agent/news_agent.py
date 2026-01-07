@@ -7,6 +7,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from app.agent.news_tools import search_naver_news, scrape_news_article
 from app.core.dependencies import get_chat_model
 
+
 @dynamic_prompt
 def news_system_prompt(request: ModelRequest) -> str:
     today = datetime.now().strftime("%Y%m%d")
@@ -18,10 +19,12 @@ Workflow:
 1. **Search**: Use `search_naver_news` to find relevant articles. 
    - Keywords: Extract key economic terms from the user query.
    - **Retry on Empty**: If the search returns 0 results, you MUST try again with a different, broader, or alternative query. Try up to 2-3 retries if needed.
-2. **Select & Scrape**: Look at the titles and dates. Select 3-7 most relevant and recent articles.
+   - **Retry on UNRELATED NEWS**: If the search returns articles that are not related to the user query, you MUST try again with a different, broader, or alternative query. Try up to 2-3 retries if needed.
+2. **Select & Scrape**: Look at the titles and dates. Select 2~3 most relevant and recent articles.
    - Use `scrape_news_article` to get the full content of these selected articles.
    - **Retry on Error**: If `scrape_news_article` fails (returns an error message), you MUST try searching again (refresh results) or select a different article. Do NOT stop at the error.
    - Do NOT scrape everything. Be selective.
+   - Before extracting/scraping, you MUST evaluate if the search results match the User Intention. If mismatch: "Do NOT use scrape_news_article. Retry with better keywords or stop if retries fail."
 3. **Analyze & Answer**:
    - Synthesize the information from the scraped articles.
    - **MANDATORY**: When answering, you MUST cite the source.
