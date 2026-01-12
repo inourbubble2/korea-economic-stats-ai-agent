@@ -1,9 +1,10 @@
+from typing import List
+
+from app.core.logger import get_logger
+from app.core.utils import format_date
+from app.schema.statistics import Statistic, StatisticItem, StatisticQueryParametersList
 from app.services.ecos_service import ecos_service
 from app.workflow.ecos.state import EcosState
-from app.core.utils import format_date
-from app.core.logger import get_logger
-from app.schema.statistics import Statistic, StatisticItem, StatisticQueryParametersList
-from typing import List
 
 logger = get_logger(__name__)
 
@@ -34,9 +35,7 @@ async def fetch_data_node(state: EcosState) -> dict:
                 "fetched_items": None,
             }
 
-        logger.debug(
-            f"Fetched Data for {params.item_name or params.item_code}: {str(data)[:500]}..."
-        )
+        logger.debug(f"Fetched Data for {params.item_name or params.item_code}: {str(data)[:500]}...")
 
         selected_item = next((i for i in items if i.code == params.item_code), None)
 

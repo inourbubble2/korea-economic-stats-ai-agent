@@ -1,7 +1,9 @@
-from typing import Annotated, List, Optional, TypedDict, Dict
+from typing import Annotated, List, Optional, TypedDict
+
 from langchain_core.messages import AnyMessage
 from langgraph.graph.message import add_messages
-from app.schema.statistics import Statistic, StatisticItem, StatisticData
+
+from app.schema.statistics import Statistic, StatisticData, StatisticItem
 
 
 class FetchedItemData(TypedDict):

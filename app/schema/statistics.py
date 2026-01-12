@@ -1,6 +1,5 @@
-from typing import Dict, List
-from typing import Optional
 from enum import Enum
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -31,9 +30,9 @@ class StatisticItem(BaseModel):
     end_time: str = Field(alias="END_TIME")
     cycle: Optional[Cycle] = Field(alias="CYCLE", default=None)
 
-    __str__ = (
-        lambda self: f"Name: {self.name}, Code: {self.code}, Range: {self.start_time}~{self.end_time}, Cycle: {self.cycle.value}"
-    )
+    def __str__(self):
+        return f"Name: {self.name}, Code: {self.code} "
+        +f"Range: {self.start_time}~{self.end_time}, Cycle: {self.cycle.value}"
 
     class Config:
         populate_by_name = True
@@ -41,9 +40,7 @@ class StatisticItem(BaseModel):
 
 class StatisticData(BaseModel):
     unit: str
-    data: Dict[str, Dict[str, str]] = Field(
-        description="Dictionary of {ItemName: {Time: Value}}"
-    )
+    data: Dict[str, Dict[str, str]] = Field(description="Dictionary of {ItemName: {Time: Value}}")
 
 
 class StatisticQueryParameters(BaseModel):
@@ -58,13 +55,15 @@ class StatisticQueryParametersList(BaseModel):
     """Multiple query parameters for fetching multiple items at once"""
 
     queries: List[StatisticQueryParameters] = Field(
-        description="List of query parameters. Use multiple entries if user asks for multiple items (e.g., 'GDP and unemployment rate'). Use single entry for single item requests.",
+        description="""
+        List of query parameters. 
+        Use multiple entries if user asks for multiple items (e.g., 'GDP and unemployment rate'). 
+        Use single entry for single item requests.
+        """,
         min_length=1,
     )
 
 
 class SelectedStatistic(BaseModel):
-    stat_code: Optional[str] = Field(
-        description="The selected statistic code, or null if none match"
-    )
+    stat_code: Optional[str] = Field(description="The selected statistic code, or null if none match")
     reason: str = Field(description="Reason for selection or failure")

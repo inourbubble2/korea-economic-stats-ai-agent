@@ -1,9 +1,10 @@
-from app.core.dependencies import get_chat_model
-from app.workflow.ecos.state import EcosState
-from app.core.logger import get_logger
-from langchain_core.messages import SystemMessage, HumanMessage
-
 from datetime import datetime
+
+from langchain_core.messages import HumanMessage, SystemMessage
+
+from app.core.dependencies import get_chat_model
+from app.core.logger import get_logger
+from app.workflow.ecos.state import EcosState
 
 logger = get_logger(__name__)
 
@@ -39,7 +40,7 @@ Key guidelines:
 2. ANALYSIS RULES:
    - Convert large units to Korean readable format (조, 억).
    - If multiple items are provided, compare and analyze them together.
-   - PARTIAL DATA HANDLING: If data is available for only PART of the requested period , Present the available data first.
+   - If data is available for only PART of the requested period, Present the available data first.
 """
         ),
         HumanMessage(

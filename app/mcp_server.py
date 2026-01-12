@@ -4,11 +4,11 @@ from typing import Optional
 from mcp.server.fastmcp import FastMCP
 from starlette.applications import Starlette
 
-from app.workflow.ecos.graph import ecos_graph
 from app.agent.news_agent import news_agent
+from app.core.callbacks import AgentLoggingCallback
 from app.core.config import settings
 from app.core.logger import get_logger
-from app.core.callbacks import AgentLoggingCallback
+from app.workflow.ecos.graph import ecos_graph
 
 logger = get_logger(__name__)
 

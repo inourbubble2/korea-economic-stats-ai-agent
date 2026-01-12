@@ -1,9 +1,8 @@
-from typing import List, Optional
-import httpx
+from typing import List
+
 from app.core.logger import get_logger
-from app.core.config import settings
-from app.schema.statistics import Statistic, StatisticItem, StatisticData
 from app.repository.statistics import get_statistics_repository
+from app.schema.statistics import Statistic
 
 logger = get_logger(__name__)
 

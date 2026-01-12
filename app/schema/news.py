@@ -1,12 +1,11 @@
 from typing import Optional
+
 from pydantic import BaseModel, Field
 
 
 class News(BaseModel):
     title: str = Field(description="Title of the news article")
-    original_link: str = Field(
-        alias="originallink", description="Original link to the article"
-    )
+    original_link: str = Field(alias="originallink", description="Original link to the article")
     description: str = Field(description="Description or summary of the article")
     pub_date: str = Field(alias="pubDate", description="Publication date string")
 

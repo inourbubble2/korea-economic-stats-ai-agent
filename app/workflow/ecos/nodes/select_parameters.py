@@ -1,10 +1,12 @@
 from datetime import datetime
-from app.core.dependencies import get_chat_model
-from app.workflow.ecos.state import EcosState
-from app.core.logger import get_logger
-from app.schema.statistics import StatisticQueryParametersList, StatisticItem, Statistic
 from typing import List
-from langchain_core.messages import SystemMessage, HumanMessage
+
+from langchain_core.messages import HumanMessage, SystemMessage
+
+from app.core.dependencies import get_chat_model
+from app.core.logger import get_logger
+from app.schema.statistics import Statistic, StatisticItem, StatisticQueryParametersList
+from app.workflow.ecos.state import EcosState
 
 logger = get_logger(__name__)
 
@@ -30,7 +32,9 @@ Current Date: {today} (Today is {today[:4]}-{today[4:6]}-{today[6:]})
 Key rules:
 - If country isn't specified, assume it's Korea.
 - Format dates correctly: A(YYYY), Q(YYYYQn), M(YYYYMM), D(YYYYMMDD).
-- CRITICAL: Check the 'Range' provided for each item (e.g., 200312~202411). Your selected start_time and end_time MUST fall strictly within this valid range. Do not request dates outside the provided Range.
+- CRITICAL: Check the 'Range' provided for each item (e.g., 200312~202411). 
+- Your selected start_time and end_time MUST fall strictly within this valid range. 
+- Do not request dates outside the provided Range.
 - If user asks for multiple items (e.g., "GDP and unemployment"), select multiple. Otherwise select one.
 - If there was a previous error, adjust your parameters (different date format, item, or shorter range)."""
         ),

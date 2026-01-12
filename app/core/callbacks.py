@@ -3,7 +3,6 @@ from typing import Any, Dict, List, Optional, Union
 from uuid import UUID
 
 from langchain_core.callbacks import BaseCallbackHandler
-from langchain_core.outputs import LLMResult
 
 
 class AgentLoggingCallback(BaseCallbackHandler):
@@ -37,9 +36,7 @@ class AgentLoggingCallback(BaseCallbackHandler):
         **kwargs: Any,
     ) -> Any:
         output_str = str(output)
-        truncated_output = (
-            output_str[:500] + "..." if len(output_str) > 500 else output_str
-        )
+        truncated_output = output_str[:500] + "..." if len(output_str) > 500 else output_str
         self.logger.info(f"✅ Tool End: Output: {truncated_output}")
 
     def on_tool_error(

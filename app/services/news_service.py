@@ -1,12 +1,13 @@
 import asyncio
 from typing import List
+
 import httpx
 import nltk
 from newspaper import Article
 
 from app.core.config import settings
-from app.schema.news import News, NewsItem
 from app.core.logger import get_logger
+from app.schema.news import News, NewsItem
 
 logger = get_logger(__name__)
 
@@ -23,9 +24,7 @@ class NewsService:
             "X-Naver-Client-Secret": self.client_secret,
         }
 
-    async def search_news(
-        self, query: str, display: int = 5, sort: str = "sim"
-    ) -> List[News]:
+    async def search_news(self, query: str, display: int = 5, sort: str = "sim") -> List[News]:
         """
         Search Naver News for the given query.
         """
@@ -33,9 +32,7 @@ class NewsService:
         logger.info(f"📰 Searching News: {query}")
 
         async with httpx.AsyncClient() as client:
-            response = await client.get(
-                self.api_url, headers=self.headers, params=params
-            )
+            response = await client.get(self.api_url, headers=self.headers, params=params)
             response.raise_for_status()
             data = response.json()
             items = data.get("items", [])

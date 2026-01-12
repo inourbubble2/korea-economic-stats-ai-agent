@@ -76,8 +76,6 @@ async def get_statistic_data(
         fmt_start = format_date(start_time, cycle)
         fmt_end = format_date(end_time, cycle)
 
-        return await ecos_service.get_statistic_data(
-            stat_code, cycle, fmt_start, fmt_end, item_code
-        )
+        return await ecos_service.get_statistic_data(stat_code, cycle, fmt_start, fmt_end, item_code)
     except Exception as e:
         return f"Error fetching data: {str(e)}"

@@ -1,6 +1,6 @@
+from app.core.logger import get_logger
 from app.services.ecos_service import ecos_service
 from app.workflow.ecos.state import EcosState
-from app.core.logger import get_logger
 
 logger = get_logger(__name__)
 

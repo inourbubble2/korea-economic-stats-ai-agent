@@ -1,6 +1,6 @@
 import asyncio
+
 import httpx
-import json
 
 
 async def verify_mcp_connection():

@@ -1,9 +1,11 @@
 from typing import List, Optional
+
 import httpx
-from app.core.logger import get_logger
+
 from app.core.config import settings
-from app.schema.statistics import Statistic, StatisticItem, StatisticData
+from app.core.logger import get_logger
 from app.repository.statistics import get_statistics_repository
+from app.schema.statistics import Statistic, StatisticData, StatisticItem
 
 logger = get_logger(__name__)
 
@@ -42,9 +44,7 @@ class EcosService:
 
             elif "RESULT" in data:
                 logger.error(f"ECOS API Error (Items): {data['RESULT']['MESSAGE']}")
-                raise Exception(
-                    f"{data['RESULT']['MESSAGE']} (Code: {data['RESULT']['CODE']})"
-                )
+                raise Exception(f"{data['RESULT']['MESSAGE']} (Code: {data['RESULT']['CODE']})")
 
             return []
 
@@ -63,9 +63,7 @@ class EcosService:
             raise ValueError("ECOS_API_KEY is not configured.")
 
         # ECOS API Format: /StatisticSearch/{KEY}/json/kr/1/1000/{STAT_CODE}/{CYCLE}/{START}/{END}/{ITEM_CODE}
-        base_search_url = (
-            f"{self.base_url}/StatisticSearch/{self.api_key}/json/kr/1/1000/"
-        )
+        base_search_url = f"{self.base_url}/StatisticSearch/{self.api_key}/json/kr/1/1000/"
 
         parts = [stat_code, cycle, start_time, end_time]
         if item_code:

@@ -1,8 +1,9 @@
+from langchain_core.messages import HumanMessage, SystemMessage
+
 from app.core.dependencies import get_chat_model
-from app.workflow.ecos.state import EcosState
-from app.schema.statistics import SelectedStatistic
 from app.core.logger import get_logger
-from langchain_core.messages import SystemMessage, HumanMessage
+from app.schema.statistics import SelectedStatistic
+from app.workflow.ecos.state import EcosState
 
 logger = get_logger(__name__)
 
@@ -13,12 +14,7 @@ async def select_statistic_node(state: EcosState) -> dict:
 
     llm = get_chat_model()
 
-    options = "\n".join(
-        [
-            f"- {stat.stat_code}: {stat.full_path} (Cycle: {stat.cycle.value})"
-            for stat in stats
-        ]
-    )
+    options = "\n".join([f"- {stat.stat_code}: {stat.full_path} (Cycle: {stat.cycle.value})" for stat in stats])
     logger.debug(f"Available Statistics:\n{options}")
 
     messages = [
@@ -40,13 +36,9 @@ Available Statistics:
     structured_llm = llm.with_structured_output(SelectedStatistic)
     selection: SelectedStatistic = await structured_llm.ainvoke(messages)
 
-    selected_stat = next(
-        (stat for stat in stats if stat.stat_code == selection.stat_code), None
-    )
+    selected_stat = next((stat for stat in stats if stat.stat_code == selection.stat_code), None)
 
     return {
         "selected_statistic": selected_stat,
-        "error_message": None
-        if selected_stat
-        else "Selected statistic code not found in options.",
+        "error_message": None if selected_stat else "Selected statistic code not found in options.",
     }

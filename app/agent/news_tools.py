@@ -1,6 +1,8 @@
-from app.schema.news import News, NewsItem
 from typing import List
+
 from langchain_core.tools import tool
+
+from app.schema.news import News, NewsItem
 from app.services.news_service import news_service
 
 

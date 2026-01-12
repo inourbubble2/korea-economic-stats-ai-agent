@@ -1,14 +1,15 @@
-from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
-from app.workflow.ecos.state import EcosState
+from langgraph.graph import END, START, StateGraph
+
 from app.workflow.ecos.nodes import (
-    fetch_statistics_node,
-    select_statistic_node,
-    fetch_items_node,
-    select_parameters_node,
     fetch_data_node,
+    fetch_items_node,
+    fetch_statistics_node,
     generate_node,
+    select_parameters_node,
+    select_statistic_node,
 )
+from app.workflow.ecos.state import EcosState
 
 
 def route_after_fetch_statistics(state: EcosState) -> str:

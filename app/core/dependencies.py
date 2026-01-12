@@ -1,4 +1,3 @@
-from langchain_openai.chat_models.base import ChatOpenAI
 import csv
 from functools import lru_cache
 from pathlib import Path
@@ -8,6 +7,7 @@ from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
 from langchain_core.vectorstores import InMemoryVectorStore
 from langchain_openai import OpenAIEmbeddings
+from langchain_openai.chat_models.base import ChatOpenAI
 
 from app.core.config import settings
 from app.schema.statistics import Statistic
@@ -31,9 +31,7 @@ def get_index_path() -> Path:
 @lru_cache
 def get_embeddings() -> Embeddings:
     """Provides the embedding model instance."""
-    return OpenAIEmbeddings(
-        model=settings.EMBEDDING_MODEL, api_key=settings.OPENAI_API_KEY
-    )
+    return OpenAIEmbeddings(model=settings.EMBEDDING_MODEL, api_key=settings.OPENAI_API_KEY)
 
 
 @lru_cache

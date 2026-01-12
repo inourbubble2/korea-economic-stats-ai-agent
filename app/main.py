@@ -1,5 +1,7 @@
 from contextlib import asynccontextmanager
 
+from ag_ui_langgraph import add_langgraph_fastapi_endpoint
+from copilotkit import LangGraphAGUIAgent
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -8,9 +10,6 @@ from app.agent.news_agent import news_agent
 from app.core.config import settings
 from app.mcp_server import create_mcp_app
 from app.repository.statistics import get_statistics_repository
-
-from ag_ui_langgraph import add_langgraph_fastapi_endpoint
-from copilotkit import LangGraphAGUIAgent
 
 mcp_app = create_mcp_app()
 
