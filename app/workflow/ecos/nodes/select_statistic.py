@@ -23,15 +23,17 @@ async def select_statistic_node(state: EcosState) -> dict:
 
     messages = [
         SystemMessage(
-            content="""You are a korean expert at selecting the most relevant economic statistic based on user queries."""
+            content="""You are a korean expert at selecting the most relevant economic statistic based on user queries.
+                    Select the SINGLE best statistic that matches the user's intent.
+                    DO NOT SELECT 북한 Related Statistics unless it's mentioned.
+            """
         ),
         HumanMessage(
             content=f"""User Query: {state["query"]}
 
 Available Statistics:
 {options}
-
-Select the SINGLE best statistic that matches the user's intent."""
+"""
         ),
     ]
 
