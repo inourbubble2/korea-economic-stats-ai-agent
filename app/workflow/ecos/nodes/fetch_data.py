@@ -30,8 +30,9 @@ async def fetch_data_node(state: EcosState) -> dict:
                 item_code=params.item_code,
             )
         except Exception as e:
+            logger.error(f"Failed to fetch data for {params}", e)
             return {
-                "error_message": f"Failed to fetch data for {params.item_name or params.item_code}: {e}",
+                "error_message": f"Failed to fetch data for {params} - Try again with different params.",
                 "fetched_items": None,
             }
 

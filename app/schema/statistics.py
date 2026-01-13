@@ -31,8 +31,10 @@ class StatisticItem(BaseModel):
     cycle: Optional[Cycle] = Field(alias="CYCLE", default=None)
 
     def __str__(self):
-        return f"Name: {self.name}, Code: {self.code} "
-        +f"Range: {self.start_time}~{self.end_time}, Cycle: {self.cycle.value}"
+        return (
+            f"Name: {self.name}, Code: {self.code} "
+            f"Range: {self.start_time}~{self.end_time}, Cycle: {self.cycle.value}"
+        )
 
     class Config:
         populate_by_name = True

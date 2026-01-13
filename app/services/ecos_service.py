@@ -107,12 +107,6 @@ class EcosService:
                 error_code = data["RESULT"]["CODE"]
                 message = data["RESULT"]["MESSAGE"]
 
-                # Add hints for LLM to recover gracefully
-                if error_code == "INFO-200":
-                    message += " (Hint: Check the date. DO NOT RETRY with the exact same parameters.)"
-                if error_code == "ERROR-101":
-                    message += " (Hint: Check the cycle. DO NOT RETRY with the exact same parameters.)"
-
                 logger.error(f"ECOS API Error (Data): {message}")
                 raise Exception(f"{message} (Code: {error_code})")
 
